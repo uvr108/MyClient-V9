@@ -23,11 +23,11 @@ export interface Hijo  {
       <button class="btn btn-link" (click)="mensage(padre)">[x]</button>
       <div *ngIf="mostra" style="padding-left: 25px;">
           <h4>{{tablas[index+1]}} |  {{out[0] | json}}</h4>
-          <table width="100%" border="0">
+          <table width="100%" border="1">
           <tr><td>
           <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">((+))</button>
           {{campos[index+1] | json}}
-              <table width="100%">
+              <table width="100%" border="1">
               <tr *ngFor="let h of hijo; index as Id">
                   <td *ngFor="let c of campos[index+1]">
                     <div *ngIf="c==='id'; else mostra">
@@ -53,7 +53,7 @@ export interface Hijo  {
           </span>
           <hr>
           <span>
-            <table width="70%"><tr><td>
+            <table width="70%" border="1"><tr><td>
              <button *ngIf="!editTable" class="btn btn-info btn-sm" type="submit"
              [disabled]="!listForm.valid">Agregar</button>
              </td>
@@ -69,7 +69,8 @@ export interface Hijo  {
              <button class="btn btn-info btn-sm" type="button"
              (click)="cerrar()">Cerrar</button>
              </td>
-             </tr></table>
+             </tr>
+            </table>
           </span>
           <hr>
 
@@ -119,8 +120,8 @@ export class DetailComponent implements OnInit {
     const factory = this.resolver.resolveComponentFactory(MasterComponent);
     this.componentRef = this.entry.createComponent(factory);
     this.componentRef.instance.message = this.tablas[this.index + 2];
-    // this.recursivo = this.recursivo === true ? false : true;
-    // if (this.recursivo) { this.desactiva_recursivo(); }
+    this.recursivo = this.recursivo === true ? false : true;
+    if (this.recursivo) { this.desactiva_recursivo(); }
   }
 
   desactiva_recursivo() {
