@@ -14,12 +14,13 @@ import { isObject } from 'util';
 })
 export class MasterComponent implements OnInit, AfterViewInit {
 
-@Input() message: string;
+@Input() table: string;
+@Input() fk: number = null;
 
 padre: any = [];
 hijo: any = [];
 
-table: string;
+// table: string;
 Tabla: Array<string>;
 navega: Array<Array<string>> = NAVEGA;
 
@@ -35,8 +36,7 @@ constructor( private crudService: CrudService, private route: ActivatedRoute, pr
 
 ngOnInit() {
 
-    this.crudService.Mostra();
-    if (this.message) { this.table = this.message; } else {
+    if (this.table) {  } else {
             // tslint:disable-next-line: no-string-literal
             this.route.data.subscribe(v => this.table = v['table']);
     }
@@ -46,7 +46,6 @@ ngOnInit() {
     this.load();
 
 }
-
 
 
 carga_index(): void {
@@ -98,11 +97,16 @@ carga_index(): void {
 }
 
 load(): void {
-
-  console.log(`table: load Tabla -> ${this.table}, ${JSON.stringify(this.Tabla)}`);
-  this.crudService.getList(this.table)
-  .subscribe(data => { this.padre = data; });
-
+  console.log('fk: ', this.fk);
+  if (this.fk) {
+    this.crudService.GetByFk(this.table, this.fk)
+    .subscribe(data => this.padre = data);
+  } else
+  {
+    this.crudService.getList(this.table)
+    .subscribe(data => { this.padre = data; });
+  }
+  console.log('Padre: ', this.padre);
 }
 
 marcar_nuevo() {
@@ -132,9 +136,9 @@ updateTabla(msg: object = null) {
 // agregar
 
   onSubmit() {
-  // console.log('aaaaaa');
+
   this.crudService
-    .adds(this.listForm.value, this.table)
+    .agregar(this.listForm.value, this.table, this.fk)
     .subscribe(() => {
       this.load();
       this.updateTabla();

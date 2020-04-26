@@ -17,32 +17,25 @@ export interface Hijo  {
   selector: 'app-detail',
   template: `
   <ng-template #mostraTemplate let-peopleCounter="numberOfPeople">
-      <button class="btn btn-link" (click)="marcar_mostra()">-[*]-</button>
-      [{{out[1]}}]
-      [{{out[2]}}]
+      <button class="btn btn-link" (click)="marcar_mostra()">[*]</button>
+
+      {{out | json}}
+
       <button class="btn btn-link" (click)="mensage(padre)">[x]</button>
       <div *ngIf="mostra" style="padding-left: 25px;">
           <h4>{{tablas[index+1]}} |  {{out[0] | json}}</h4>
-          <table width="100%" border="1">
-          <tr><td>
-          <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">((+))</button>
+
+          <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
           {{campos[index+1] | json}}
-              <table width="100%" border="1">
-              <tr *ngFor="let h of hijo; index as Id">
-                  <td *ngFor="let c of campos[index+1]">
-                    <div *ngIf="c==='id'; else mostra">
-                    <button type="button" class="btn btn-link btn-sm" (click)="activa_recursivo()">=[*]=</button>
-                    <template #messagecontainer>
-                    </template>
-                    </div>
-                  <ng-template #mostra>{{h[c]}}</ng-template>
-                  </td>
-                  <td><button class="btn btn-link btn-sm" (click)="modifica(h, h.id)">[x]</button></td>
-              </tr>
-              </table>
-        </td>
-        </tr>
-      </table>
+              <span *ngFor="let h of hijo; index as Id">
+                    <br>
+                    <button type="button" class="btn btn-link btn-sm"  (click) = "activa_recursivo(h.id)">[*]</button>
+                    {{h | json}}
+                    <button class="btn btn-link btn-sm" (click)="modifica(h, h.id)">[x]</button>
+
+                  <template #messagecontainer></template>
+              </span>
+
       </div>
       <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">
       <br>
@@ -114,12 +107,13 @@ export class DetailComponent implements OnInit {
   componentRef: any;
   out = [];
 
-  activa_recursivo() {
+  activa_recursivo(ref: number) {
     console.log(`recursivo : ${this.recursivo}`);
     this.entry.clear();
     const factory = this.resolver.resolveComponentFactory(MasterComponent);
     this.componentRef = this.entry.createComponent(factory);
-    this.componentRef.instance.message = this.tablas[this.index + 2];
+    this.componentRef.instance.table = this.tablas[this.index + 2];
+    this.componentRef.instance.fk = ref;
     this.recursivo = this.recursivo === true ? false : true;
     if (this.recursivo) { this.desactiva_recursivo(); }
   }

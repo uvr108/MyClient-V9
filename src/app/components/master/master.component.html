@@ -1,10 +1,10 @@
 <div style="padding-left: 15px; padding-right: 15px;">
 
-  <h4>{{ table }}</h4>
+  <h4>{{ table }} {{index}}</h4>
 
   <div style="padding-left: 15px; padding-top: 0px; padding-bottom: 0px;"></div>
   <table border="1">
-  <tr><td><button type="button"
+  <tr><td colspan="3"><button type="button"
     class="btn btn-link btn-sm"
     (click)="marcar_nuevo()">(+)</button>&nbsp;[{{ Tabla }}]</td></tr>
   <tr *ngFor="let p of padre; index as Id">
@@ -33,7 +33,7 @@
             </span>
             <br>
             <span>
-              <button *ngIf="!editTabla" class="btn btn-info btn-sm" type="submit" [disabled]="!listForm.valid">Agregar</button>&nbsp;
+              <button *ngIf="!editTabla" class="btn btn-info btn-sm" type="submit" [disabled]="!listForm.valid">[Agregar]</button>&nbsp;
               <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="editar()">Editar</button>&nbsp;
               <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="borrar()">Borrar</button>&nbsp;
               <button class="btn btn-info btn-sm" type="button" (click)="cerrar()">Cerrar</button>
