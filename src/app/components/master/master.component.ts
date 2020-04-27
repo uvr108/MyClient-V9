@@ -73,7 +73,7 @@ carga_index(): void {
         monto: ['', Validators.required]
     };
     this.components = [['hidden', 'id', ''], ['text', 'nombre', 'yes'], ['text', 'monto', 'yes']];
-  } else if (this.table === 'solicitud') {
+  } else if (this.table === 'Solicitud') {
     this.index = 3;
     this.lgroup = {
       id: [''],
@@ -81,32 +81,53 @@ carga_index(): void {
       solicitante: [''],
       fecha: [''],
       numero_registro: [''],
-      // centrocostoId: [''],
-      // subitemId: [''],
-      // estadosolicitudId: ['']
     };
     this.components = [['hidden', 'id', ''], ['text', 'nombre', 'yes']];
+} else if (this.table === 'OrdenCompra') {
+  this.index = 4;
+  this.lgroup = {
+    id: [''],
+    fecha_emision: [''],
+    numero_oc: [''],
+    observaciones: [''],
+  };
+  this.components = [['hidden', 'id', ''], ['text', 'fecha_emisiom', ''],
+  ['text', 'numero_oc', 'yes'],  ['text', 'observaciones', '']];
+  } else if (this.table === 'Factura') {
+    this.index = 5;
+    this.lgroup = {
+      id: [''],
+      numero_registro: [''],
+      numero_cuotas: [''],
+      monto: [''],
+      fecha_recepcion: [''],
+      observacion: ['']
+    };
+    this.components = [['hidden', 'id', ''], ['text', 'numero_registro', ''],
+    ['text', 'numero_cuotas', 'yes'], ['text', 'monto', ''], ['text', 'fecha_recepcion', ''], ['text' , 'observacion', '']];
   }
-
-  // console.log('table -> index : ' , this.table, this.index);
+  console.log('table -> index : ' , this.table, this.index);
 
   this.Tabla = this.navega[this.index];
   this.listForm = this.fb.group(this.lgroup);
-
-
 }
 
 load(): void {
   console.log('fk: ', this.fk);
   if (this.fk) {
     this.crudService.GetByFk(this.table, this.fk)
-    .subscribe(data => this.padre = data);
+    .subscribe(data => {
+      this.padre = data;
+      console.log('Padre: ', this.padre);
+    });
   } else
   {
     this.crudService.getList(this.table)
-    .subscribe(data => { this.padre = data; });
+    .subscribe(data => {
+      this.padre = data;
+      console.log('Padre: ', this.padre);
+    });
   }
-  console.log('Padre: ', this.padre);
 }
 
 marcar_nuevo() {

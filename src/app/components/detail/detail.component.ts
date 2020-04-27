@@ -23,7 +23,7 @@ export interface Hijo  {
 
       <button class="btn btn-link" (click)="mensage(padre)">[x]</button>
       <div *ngIf="mostra" style="padding-left: 25px;">
-          <h4>{{tablas[index+1]}} |  {{out[0] | json}}</h4>
+          <h4>{{tablas[index+1]}} | index : {{index+1}}  </h4>
 
           <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
           {{campos[index+1] | json}}

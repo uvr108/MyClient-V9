@@ -27,12 +27,12 @@ httpOptions = {
   constructor(private http: HttpClient) { }
 
 GetByFk(table: string, id: number): Observable<[{}]> {
-
-  return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
-  .pipe(
-    retry(1),
-    catchError(this.errorHandl)
-  );
+    console.log('xxx : ', this.baseurl + '/api/' + table + '/fk/' + id);
+    return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    );
 }
 
 getList(table: string): Observable<Array<{}>> {
