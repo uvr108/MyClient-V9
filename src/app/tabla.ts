@@ -1,11 +1,51 @@
-export const Presupuesto: Array<string> = ['id', 'nombre', 'monto'];
-export const Item: Array<string> = ['id', 'nombre', 'presupuestoId', 'monto'];
-export const SubItem: Array<string> = ['nombre', 'itemId', 'monto'];
-export const Solicitud: Array<string> = ['solicitante', 'fecha', 'numero_registro', 'centrocostoId',
-'subitemId', 'estadosolicitudId'];
-export const OrdenCompra: Array<string> = ['fecha_emision', 'numero_oc', 'observaciones',
-'solicitudId', 'estadoocId', 'centrocostoId'];
-export const Factura: Array<string> = ['numero_registro', 'numero_cuotas', 'monto', 'fecha_recepcion', 'observacion'];
+import { Validators } from '@angular/forms';
 
-export const NAVEGA: Array<Array<string>> = [Presupuesto, Item, SubItem, Solicitud, OrdenCompra, Factura];
-export const TABLAS: Array<string> = ['Presupuesto', 'Item', 'SubItem', 'Solicitud', 'OrdenCompra', 'Factura'];
+
+// export const Presupuesto: Array<string> = ['id', 'nombre', 'monto'];
+// export const Item: Array<string> = ['id', 'nombre', 'monto'];
+// export const SubItem: Array<string> = ['nombre', 'monto'];
+// export const Solicitud: Array<string> = ['solicitante', 'fecha', 'numero_registro'];
+// export const OrdenCompra: Array<string> = ['fecha_emision', 'numero_oc', 'observaciones'];
+// export const Factura: Array<string> = ['numero_registro', 'numero_cuotas', 'monto', 'fecha_recepcion', 'observacion'];
+
+// export const NAVEGA: Array<Array<string>> = [Presupuesto, Item, SubItem, Solicitud, OrdenCompra, Factura];
+// export const TABLAS: Array<string> = ['Presupuesto', 'Item', 'SubItem', 'Solicitud', 'OrdenCompra', 'Factura'];
+
+export const TABLAS: object = {
+
+  Presupuesto: {
+    next : 'Item',
+    column: ['id', 'nombre', 'monto'],
+    lgroup : { id: [''], nombre: ['', Validators.required] },
+    components: [['hidden', 'id', ''], ['text', 'nombre', 'yes']]
+  },
+
+  Item: {
+    next: 'SubItem',
+    column: ['id', 'nombre', 'monto'],
+    lgroup : { id: [''], nombre: ['', Validators.required] },
+    components: [['hidden', 'id', ''], ['text', 'nombre', 'yes']]
+  }
+
+, SubItem: {
+    next: 'Solicitud',
+    column: ['id', 'nombre', 'monto'],
+    lgroup : { id: [''], nombre: ['', Validators.required], monto: ['', Validators.required] },
+    components: [['hidden', 'id', ''], ['text', 'nombre', 'yes'], ['text', 'monto', 'yes']]}
+
+
+, Solicitud: {
+    next: 'OrdenCompra',
+    column: ['id', 'solicitante', 'fecha', 'numero_registro'],
+    lgroup: { id: [''], solicitante: ['', Validators.required], fecha: [''], numero_registro: ['', Validators.required] },
+    components: [['hidden', 'id', ''], ['text', 'solicitante', 'yes'], ['date', 'fecha', 'yes'], ['text', 'numero_registro', 'yes']]}
+
+
+, OrdenCompra: {next: 'factura', column: ['id', 'fecha_emision', 'numero_oc', 'observaciones'],
+  lgroup: { id: [''], fecha_emision: [''], numero_oc: [''], observaciones: [''] },
+  components: [['hidden', 'id', ''], ['text', 'solicitante', 'yes'], ['text', 'fecha', 'yes'], ['text', 'numero_registro', 'yes']]}
+
+, Factura: {next: null, column: ['id', 'numero_registro', 'numero_cuotas', 'monto', 'fecha_recepcion', 'observacion'],
+  lgroup : { id: [''], numero_registro: [''], numero_cuotas: [''], monto: [''], fecha_recepcion: [''], observacion: [''] },
+  components: [['hidden', 'id', ''], ['text', 'solicitante', 'yes'], ['text', 'fecha', 'yes'], ['text', 'numero_registro', 'yes']]}
+};

@@ -1,1 +1,62 @@
-<p>detail works!</p>
+
+  <div>
+
+    <button class="btn btn-link" (click)="marcar_mostra()">marca_mostra_detail[*]</button>
+
+    [{{out | json}}]
+
+
+
+    <button class="btn btn-link" (click)="mensage(padre)">mensaje_detail[x]</button>
+
+
+    <div *ngIf="mostra" style="padding-left: 25px;">
+        <h4>{{ next }}</h4>
+
+        <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">marca_nuevo_detail[+]</button>
+
+            <span *ngFor="let h of hijo; index as Id">
+                  <br>
+                  <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(h.id, this.Tablas[next]['next'])">recursivo_detalle[*][{{h.id}}|{{this.Tablas[next]['next']}}]</button>
+                  {{h | json}}
+                  <button class="btn btn-link btn-sm" (click)="modifica(h, h.id)">modifica_detalle[x]</button>
+
+                <template #messagecontainer></template>
+            </span>
+
+    </div>
+
+    <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">
+    <br>
+    <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
+
+        <span *ngFor="let c of components">
+              {{c[1]}} <input type="{{c[0]}}" formControlName="{{c[1]}}"/>
+        </span>
+        <hr>
+        <span>
+          <table width="70%"><tr><td>
+           <button *ngIf="!editTable" class="btn btn-info btn-sm" type="submit"
+           [disabled]="!listForm.valid">(Agregar)</button>
+           </td>
+           <td>
+           <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
+           [disabled]="!listForm.valid" (click)="Update()">(Editar)</button>
+           </td>
+           <td>
+           <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
+           [disabled]="!listForm.valid" (click)="Borrar()">(Borrar)</button>&nbsp;
+           </td>
+           <td>
+           <button class="btn btn-info btn-sm" type="button"
+           (click)="cerrar()">(Cerrar)</button>
+           </td>
+           </tr>
+          </table>
+        </span>
+        <hr>
+
+    </form>
+    </div>
+
+</div>

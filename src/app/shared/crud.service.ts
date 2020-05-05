@@ -27,7 +27,7 @@ httpOptions = {
   constructor(private http: HttpClient) { }
 
 GetByFk(table: string, id: number): Observable<[{}]> {
-    console.log('xxx : ', this.baseurl + '/api/' + table + '/fk/' + id);
+    // console.log('xxx : ', this.baseurl + '/api/' + table + '/fk/' + id);
     return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
     .pipe(
       retry(1),
@@ -44,13 +44,19 @@ getList(table: string): Observable<Array<{}>> {
     );
 }
 
-agregar(tabla: {}, table: string, fk: number): Observable<{}> {
-  // console.log(tabla);
-  return this.http.post<any>(this.baseurl + '/api/' + table + '/' + fk, tabla, this.httpOptions);
+agregar(tabla: {}, table: string, fk: number = null): Observable<{}> {
+
+  let baseurl = this.baseurl + /api/ + table;
+
+  if (fk) { baseurl += '/' + fk; }
+
+  // console.log('agregar : ', baseurl, tabla);
+
+  return this.http.post<any>(baseurl, tabla, this.httpOptions);
 }
 
 adds_hijo(padre: string, hijo: string, id: number,  hjo: Hijo): Observable<Hijo> {
-  console.log('uli : ', this.baseurl + '/api/' + hijo + '/' + id);
+  // console.log('uli : ', this.baseurl + '/api/' + hijo + '/' + id);
   return this.http.post<Hijo>(this.baseurl + '/api/' + hijo + '/' + id , hjo , this.httpOptions);
 
 }

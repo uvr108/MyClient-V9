@@ -1,21 +1,17 @@
 <div style="padding-left: 15px; padding-right: 15px;">
 
-  <h4>{{ table }} Index : {{index}}</h4>
+  <h4>{{ table }} </h4>
 
   <div style="padding-left: 15px; padding-top: 0px; padding-bottom: 0px;"></div>
-  <table border="1">
+  <table>
   <tr><td colspan="3"><button type="button"
     class="btn btn-link btn-sm"
-    (click)="marcar_nuevo()">(+)</button>&nbsp;[{{ Tabla }}]</td></tr>
+    (click)="marcar_nuevo()">marca_nuevo_master(+)</button>&nbsp;[{{ table }}]</td></tr>
   <tr *ngFor="let p of padre; index as Id">
     <td colspan="2">
       <app-detail [ref]="p.id"
-                [name]="p.name"
                 [padre]="padre[Id]"
-                [index]="index"
-                [components]="components"
-                [listForm]="listForm"
-                [lgroup]="lgroup"
+                [table]="table"
                 (enviar) = "enviar($event)">
       </app-detail>
     </td>
@@ -28,17 +24,19 @@
 
           <input *ngIf="editTabla" type="hidden" formControlName="id">
             <hr>
+
             <span *ngFor="let c of components">
-                 {{c[1]}} : <input *ngIf = "c[0] != 'hidden'" type="{{c[0]}}" formControlName="{{c[1]}}" required> <br>
+
+                 {{c[1]}} : <input *ngIf = "c[0] != 'hidden'" type="{{c[0]}}" formControlName="{{c[1]}}"> <br>
             </span>
             <br>
             <span>
               <button *ngIf="!editTabla" class="btn btn-info btn-sm" type="submit" [disabled]="!listForm.valid">[Agregar]</button>&nbsp;
-              <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="editar()">Editar</button>&nbsp;
-              <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="borrar()">Borrar</button>&nbsp;
-              <button class="btn btn-info btn-sm" type="button" (click)="cerrar()">Cerrar</button>
+              <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="editar()">[Editar]</button>&nbsp;
+              <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="borrar()">[Borrar]</button>&nbsp;
+              <button class="btn btn-info btn-sm" type="button" (click)="cerrar()">[Cerrar]</button>
             </span>
-
+            <hr>
 
       </form>
 
