@@ -36,7 +36,7 @@ export class DetailComponent implements OnInit {
 
   lgroup: Array<string>;
   components: Array<string>;
-  campos: Array<string>;
+  // campos: Array<string>;
   next: string;
 
   editTable = false; // habilita/desabilita boton editar / agregar
@@ -156,7 +156,7 @@ this.id = id;
     console.log('Inicio Detalle this.next : ', this.next);
     this.lgroup = this.Tablas[this.next]['lgroup'];
     this.components = this.Tablas[this.next]['components'];
-    this.campos = this.Tablas[this.next]['column'];
+    // this.campos = this.Tablas[this.next]['column'];
 
     this.listForm = this.fb.group(this.lgroup);
     console.log(`Inicio Detalle lgroup : ${JSON.stringify(this.lgroup)} ref ${this.ref}`);

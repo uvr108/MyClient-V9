@@ -27,10 +27,11 @@
     <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">
     <br>
     <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
+        <table>
 
-        <span *ngFor="let c of components">
-              {{c[1]}} <input type="{{c[0]}}" formControlName="{{c[1]}}"/>
-        </span>
+          <tr *ngFor="let c of components"><th>{{c[1]}} </th><td><input type="{{c[0]}}" formControlName="{{c[1]}}"/></td></tr>
+
+        </table>
         <hr>
         <span>
           <table width="70%"><tr><td>
