@@ -80,7 +80,7 @@ export class DetailComponent implements OnInit {
 marcar_nuevo() {
   this.nuevo = this.nuevo === true ? false : true;
   this.editTable = false;
-  console.log(`xxx : ${this.table}`);
+  console.log(`marca_nuevo() Detalle: next ${this.next} lgroup : ${JSON.stringify(this.lgroup)}`);
   this.limpiaTabla();
 }
 
@@ -91,11 +91,11 @@ limpiaTabla(){
     dict[k] = null;
   }
   this.listForm.patchValue(dict);
-  console.log(this.listForm.value);
+  console.log(`limpiar : ${JSON.stringify(this.listForm.value)}`);
 }
 
 modifica(h: object , id: number) {
-console.log(h, id);
+console.log(`modifica Detalle : ${h} ${id}`);
 this.editTable = true;
 this.nuevo = this.nuevo === true ? false : true;
 this.listForm.patchValue(h);
@@ -104,11 +104,12 @@ this.id = id;
 }
 
   load(id: number) {
-    const out = [];
-
+    // const out = [];
+    console.log(`load()  Detail : this.table ${this.table} next ${this.next} id ${id}`);
     return this.crudService.GetByFk(this.next, id).subscribe((data: Array<{}>) => {
       this.hijo = data;
-
+      console.log(`load() Detail: this.hijo : ${JSON.stringify(this.hijo)}`);
+      /*
       if (Object(this.hijo).length > 0) {
         let out2 = [];
         this.hijo.forEach((a) => {
@@ -116,7 +117,7 @@ this.id = id;
           this.campos.forEach((b: any) => out2.push(a[b])), out.push(out2), out2 = [];
         }), this.detalle = out;
       }
-
+      */
     });
 
   }
@@ -151,17 +152,17 @@ this.id = id;
 
   ngOnInit() {
 
-    console.log('Inicio this.table : ', this.table);
-    this.lgroup = this.Tablas[this.table]['lgroup'];
-    this.components = this.Tablas[this.table]['components'];
-    this.campos = this.Tablas[this.table]['column'];
     this.next = this.Tablas[this.table]['next'];
+    console.log('Inicio Detalle this.next : ', this.next);
+    this.lgroup = this.Tablas[this.next]['lgroup'];
+    this.components = this.Tablas[this.next]['components'];
+    this.campos = this.Tablas[this.next]['column'];
 
     this.listForm = this.fb.group(this.lgroup);
-    // console.log(`campos : ${JSON.stringify(this.campos)} ref ${this.ref}`);
+    console.log(`Inicio Detalle lgroup : ${JSON.stringify(this.lgroup)} ref ${this.ref}`);
 
 
-    this.campos.forEach((a) => this.out.push(this.padre[a]));
+    // this.campos.forEach((a) => this.out.push(this.padre[a]));
     this.load(this.ref);
 
     // console.log(`out:  ${this.out}`);

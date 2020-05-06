@@ -13,7 +13,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 })
 export class MasterComponent implements OnInit, AfterViewInit {
 
-@Input() table: string;
+@Input() table: string = null;
 @Input() fk: number = null;
 
 padre: any = [];
@@ -42,23 +42,28 @@ ngOnInit() {
     this.lgroup = this.Tablas[this.table]['lgroup'];
     this.components = this.Tablas[this.table]['components'];
     this.listForm = this.fb.group(this.lgroup);
-    // console.log(this.table, this.padre, this.lgroup);
+
+    console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
+    console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
+    console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
+    console.log(`onInit Master component : ${JSON.stringify(this.components)}`);
 }
 
 load(): void {
-
+  console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
   if (this.fk) {
+
     this.crudService.GetByFk(this.table, this.fk)
     .subscribe(data => {
       this.padre = data;
-      // console.log('Padre: ', this.padre);
+      console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
   } else
   {
     this.crudService.getList(this.table)
     .subscribe(data => {
       this.padre = data;
-      // console.log('Padre: ', this.padre);
+      console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
   }
 }
@@ -66,7 +71,7 @@ load(): void {
 // agregar
 
   onSubmit() {
-    console.log(this.listForm.value);
+    console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
 
     this.crudService
     .agregar(this.listForm.value, this.table, this.fk)
@@ -120,27 +125,22 @@ marcar_nuevo() {
   this.editTabla = false;
 }
 
-updateTabla(msg: object = null) {
-  // console.log(`msg xuxa : ${JSON.stringify(msg)}`);
-  // console.log(`this.lgroup (master) ${JSON.stringify(this.lgroup)}`);
-
-  if (msg === null) {
-      msg = {};
-    // tslint:disable-next-line: forin
-      for (const key in this.lgroup) {
-      if (this.lgroup[key].length > 1) {
-          // console.log(`key . ${key} value :  ${this.lgroup[key]}`);
-          msg[key] = '';
-      }
-    }
-
+limpiar() {
+  const dict = {};
+  // tslint:disable-next-line: forin
+  for (const k in this.lgroup) {
+    dict[k] = null;
   }
-  this.listForm.patchValue(msg);
-
+  this.listForm.patchValue(dict);
 }
 
+updateTabla(msg: object = null) {
+
+  if (msg === null) { this.limpiar(); } else {
+    this.listForm.patchValue(msg);
+  }
+}
 
 cerrar() { this.nuevo = false; }
-
 
 }

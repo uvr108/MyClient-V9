@@ -27,7 +27,7 @@ httpOptions = {
   constructor(private http: HttpClient) { }
 
 GetByFk(table: string, id: number): Observable<[{}]> {
-    // console.log('xxx : ', this.baseurl + '/api/' + table + '/fk/' + id);
+    console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + id);
     return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
     .pipe(
       retry(1),
@@ -50,7 +50,7 @@ agregar(tabla: {}, table: string, fk: number = null): Observable<{}> {
 
   if (fk) { baseurl += '/' + fk; }
 
-  // console.log('agregar : ', baseurl, tabla);
+  console.log('agregar crud : ', baseurl, tabla);
 
   return this.http.post<any>(baseurl, tabla, this.httpOptions);
 }

@@ -6,7 +6,7 @@
   <table>
   <tr><td colspan="3"><button type="button"
     class="btn btn-link btn-sm"
-    (click)="marcar_nuevo()">marca_nuevo_master(+)</button>&nbsp;[{{ table }}]</td></tr>
+    (click)="marcar_nuevo()">marca_nuevo_master(+)</button>&nbsp;</td></tr>
   <tr *ngFor="let p of padre; index as Id">
     <td colspan="2">
       <app-detail [ref]="p.id"
