@@ -15,7 +15,7 @@ export const TABLAS: object = {
 
   Presupuesto: {
     next : 'Item',
-    ant : null,
+    back : null,
     // column: ['id', 'nombre', 'monto'],
     lgroup : { id: [''], nombre: ['', Validators.required] },
     components: [['hidden', 'id', ''], ['text', 'nombre', 'yes']]
@@ -23,7 +23,7 @@ export const TABLAS: object = {
 
   Item: {
     next: 'SubItem',
-    ant: null,
+    back: null,
     // column: ['id', 'nombre', 'monto'],
     lgroup : { id: [''], nombre: ['', Validators.required] },
     components: [['hidden', 'id', ''], ['text', 'nombre', 'yes']]
@@ -31,7 +31,7 @@ export const TABLAS: object = {
 
 , SubItem: {
     next: 'Solicitud',
-    ant: null,
+    back: null,
     // column: ['id', 'nombre', 'monto'],
     lgroup : { id: [''], nombre: ['', Validators.required], monto: ['', Validators.required] },
     components: [['hidden', 'id', ''], ['text', 'nombre', 'yes'], ['text', 'monto', 'yes']]}
@@ -39,7 +39,7 @@ export const TABLAS: object = {
 
 , Solicitud: {
     next: 'OrdenCompra',
-    ant: ['', ''],
+    back: ['CentroCosto', 'EstadoSolicitud'],
     // column: ['id', 'solicitante', 'fecha', 'numero_registro'],
     lgroup: { id: [''], solicitante: ['', Validators.required], fecha: [''], numero_registro: ['', Validators.required] },
     components: [['hidden', 'id', ''], ['text', 'solicitante', 'yes'], ['date', 'fecha', 'yes'], ['text', 'numero_registro', 'yes']]}
@@ -47,14 +47,14 @@ export const TABLAS: object = {
 
 , OrdenCompra: {
     next: 'factura',
-    ant: null,
+    back: null,
     // column: ['id', 'fecha_emision', 'numero_oc', 'observaciones'],
     lgroup: { id: [''], fecha_emision: [''], numero_oc: [''], observaciones: [''] },
     components: [['hidden', 'id', ''], ['text', 'solicitante', 'yes'], ['text', 'fecha', 'yes'], ['text', 'numero_registro', 'yes']]}
 
 , Factura: {
   next: null,
-  ant: null,
+  back: null,
   // column: ['id', 'numero_registro', 'numero_cuotas', 'monto', 'fecha_recepcion', 'observacion'],
   lgroup : { id: [''], numero_registro: [''], numero_cuotas: [''], monto: [''], fecha_recepcion: [''], observacion: [''] },
   components: [['hidden', 'id', ''], ['text', 'solicitante', 'yes'], ['text', 'fecha', 'yes'], ['text', 'numero_registro', 'yes']]}

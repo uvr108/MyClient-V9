@@ -27,9 +27,20 @@
     <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">
     <br>
     <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
-        <table>
 
-          <tr *ngFor="let c of components"><th>{{c[1]}} </th><td><input type="{{c[0]}}" formControlName="{{c[1]}}"/></td></tr>
+        <div *ngIf="back">
+        <div *ngFor="let b of back">
+        <p><b>{{b}}-></b>
+        <select id="{{b}}">
+          <option value="0">&nbsp;</option>
+          <option *ngFor="let s of seleccion[b]"  [ngValue]="s['id']">{{s['nombre']}}</option>
+        </select>
+        </p>
+        </div>
+      </div>
+
+        <table>
+          <tr *ngFor="let c of components"><th>{{c[1]}} -></th><td><input type="{{c[0]}}" formControlName="{{c[1]}}"/></td></tr>
 
         </table>
         <hr>

@@ -43,27 +43,27 @@ ngOnInit() {
     this.components = this.Tablas[this.table]['components'];
     this.listForm = this.fb.group(this.lgroup);
 
-    console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
-    console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
-    console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
-    console.log(`onInit Master component : ${JSON.stringify(this.components)}`);
+    // console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
+    // console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
+    // console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
+    // console.log(`onInit Master component : ${JSON.stringify(this.components)}`);
 }
 
 load(): void {
-  console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
+  // console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
   if (this.fk) {
 
     this.crudService.GetByFk(this.table, this.fk)
     .subscribe(data => {
       this.padre = data;
-      console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
+      // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
   } else
   {
     this.crudService.getList(this.table)
     .subscribe(data => {
       this.padre = data;
-      console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
+      // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
   }
 }
@@ -71,7 +71,8 @@ load(): void {
 // agregar
 
   onSubmit() {
-    console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
+
+    // console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
 
     this.crudService
     .agregar(this.listForm.value, this.table, this.fk)
