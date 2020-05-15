@@ -200,21 +200,8 @@ this.listForm.patchValue(h);
         } );
     }
 
-    /*
-    if (this.back) {
-
-      this.back.forEach((b: string) => {
-        this.crudService.getList(b).subscribe((d) => {
-          this.seleccion[b] = d;
-        });
-      });
-      // console.log(`load() Detail: select xxx ${this.back}`);
-      }
-      */
-    // console.log(`Detail afterView() : ref -> ${this.ref} `);
-
-    // this.campos.forEach((a) => this.out.push(this.padre[a]));
     this.load(this.ref);
+    this.listForm = this.fb.group(this.lgroup);
 
     // console.log(`out:  ${this.out}`);
 
