@@ -18,7 +18,7 @@ export class MasterComponent implements OnInit, AfterViewInit {
 
 padre: any = [];
 lgroup: Array<string>;
-components: Array<Array<string|boolean>>;
+compon: Array<string>;
 
 // table: string;
 Tablas = TABLAS;
@@ -40,20 +40,20 @@ ngOnInit() {
 
     this.load();
     this.lgroup = this.Tablas[this.table]['lgroup'];
-    this.components = this.Tablas[this.table]['components'];
+    this.compon = this.Tablas[this.table]['compon'];
     this.listForm = this.fb.group(this.lgroup);
 
     // console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
     // console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
     // console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
-    // console.log(`onInit Master component : ${JSON.stringify(this.components)}`);
+    // console.log(`onInit Master compon : ${JSON.stringify(this.compon)}`);
 }
 
 load(): void {
   // console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
   if (this.fk) {
 
-    this.crudService.GetByFk(this.table, this.fk)
+    this.crudService.GetByFk(this.table, this.fk.toString())
     .subscribe(data => {
       this.padre = data;
       // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
@@ -72,7 +72,7 @@ load(): void {
 
   onSubmit() {
 
-    // console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
+    console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
 
     this.crudService
     .agregar(this.listForm.value, this.table, this.fk)

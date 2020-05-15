@@ -6,7 +6,7 @@
   <table>
   <tr><td colspan="3"><button type="button"
     class="btn btn-link btn-sm"
-    (click)="marcar_nuevo()">marca_nuevo_master(+)</button>&nbsp;</td></tr>
+    (click)="marcar_nuevo()">(+)</button>&nbsp;</td></tr>
   <tr *ngFor="let p of padre; index as Id">
     <td colspan="2">
       <app-detail [ref]="p.id"
@@ -25,9 +25,9 @@
           <input *ngIf="editTabla" type="hidden" formControlName="id">
             <hr>
 
-            <span *ngFor="let c of components">
+            <span *ngFor="let c of compon | keyvalue">
 
-                 {{c[1]}} : <input *ngIf = "c[0] != 'hidden'" type="{{c[0]}}" formControlName="{{c[1]}}"> <br>
+                 {{c.key}} : <input *ngIf = "c.key != 'hidden'" type="{{c.value}}" formControlName="{{c.key}}"> <br>
             </span>
             <br>
             <span>

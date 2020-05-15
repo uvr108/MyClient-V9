@@ -1,23 +1,23 @@
 
   <div>
 
-    <button class="btn btn-link" (click)="marcar_mostra()">marca_mostra_detail[*]</button>
+    <button class="btn btn-link" (click)="marcar_mostra()">[*]</button>
 
     {{padre | json}}
 
-    <button class="btn btn-link" (click)="mensage(padre)">mensaje_detail[x]</button>
+    <button class="btn btn-link" (click)="mensage(padre)">[x]</button>
 
 
     <div *ngIf="mostra" style="padding-left: 25px;">
         <h4>{{ next }}</h4>
 
-        <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">marca_nuevo_detail[+]</button>
+        <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
 
             <span *ngFor="let h of hijo; index as Id">
                   <br>
-                  <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(h.id, this.Tablas[next]['next'])">recursivo_detalle[*][{{h.id}}|{{this.Tablas[next]['next']}}]</button>
+                  <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(h.id, this.Tablas[next]['next'])">[*]</button>
                   {{h | json}}
-                  <button class="btn btn-link btn-sm" (click)="modifica(h, h.id)">modifica_detalle[x]</button>
+                  <button class="btn btn-link btn-sm" (click)="modifica(h)">[x]</button>
 
                 <template #messagecontainer></template>
             </span>
@@ -26,23 +26,27 @@
 
     <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">
     <br>
+
     <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
 
         <div *ngIf="back">
-        <div *ngFor="let b of back">
-        <p><b>{{b}}-></b>
-        <select id="{{b}}">
-          <option value="0">&nbsp;</option>
-          <option *ngFor="let s of seleccion[b]"  [ngValue]="s['id']">{{s['nombre']}}</option>
+        <div *ngFor="let b of back | keyvalue">
+        <p><b>{{b['key']}}-></b>
+        <select formControlName="{{b['key']}}">
+          <option [ngValue]="null" disabled>&nbsp;</option>
+          <option *ngFor="let s of seleccion[b['key']]"
+          [ngValue]="s['id']">{{s['nombre']}}</option>
         </select>
         </p>
         </div>
       </div>
-
+        <p>compon : {{table}} | {{compon | json}} | {{hijo | json}}</p>
         <table>
-          <tr *ngFor="let c of components"><th>{{c[1]}} -></th><td><input type="{{c[0]}}" formControlName="{{c[1]}}"/></td></tr>
-
+          <tr *ngFor="let c of compon | keyvalue"><th>{{c['key']}} -></th>
+           <td><input type="{{c['value']}}" formControlName="{{c['key']}}"/></td>
+          </tr>
         </table>
+
         <hr>
         <span>
           <table width="70%"><tr><td>
@@ -51,11 +55,11 @@
            </td>
            <td>
            <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
-           [disabled]="!listForm.valid" (click)="Update()">(Editar)</button>
+           [disabled]="!listForm.valid" (click)="Update(hijo[0].id)">(Editar)</button>
            </td>
            <td>
            <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
-           [disabled]="!listForm.valid" (click)="Borrar()">(Borrar)</button>&nbsp;
+           [disabled]="!listForm.valid" (click)="Borrar(hijo[0].id)">(Borrar)</button>&nbsp;
            </td>
            <td>
            <button class="btn btn-info btn-sm" type="button"
@@ -67,6 +71,7 @@
         <hr>
 
     </form>
+
     </div>
 
 </div>

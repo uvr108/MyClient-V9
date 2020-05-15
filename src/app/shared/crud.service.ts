@@ -4,10 +4,13 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 // import { Tabla } from '../tabla';
 
+/*
 export interface Hijo {
   nombre: string;
   monto: number;
 }
+*/
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +29,7 @@ httpOptions = {
 
   constructor(private http: HttpClient) { }
 
-GetByFk(table: string, id: number): Observable<[{}]> {
+GetByFk(table: string, id: string): Observable<[{}]> {
     // console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + id);
     return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
     .pipe(
@@ -55,19 +58,20 @@ agregar(tabla: {}, table: string, fk: number = null): Observable<{}> {
   return this.http.post<any>(baseurl, tabla, this.httpOptions);
 }
 
-adds_hijo(padre: string, hijo: string, id: number,  hjo: Hijo): Observable<Hijo> {
+adds_hijo(padre: string, hijo: string, ref: string,  hjo: object): Observable<object> {
   // console.log('uli : ', this.baseurl + '/api/' + hijo + '/' + id);
-  return this.http.post<Hijo>(this.baseurl + '/api/' + hijo + '/' + id , hjo , this.httpOptions);
+  return this.http.post<object>(this.baseurl + '/api/' + hijo + '/' + ref , hjo , this.httpOptions);
 
 }
 
 // PUT
-Update(id: number, tab: {}, table: string): Observable<{}> {
+Update(id: string, tab: {}, table: string): Observable<{}> {
+  console.log( `${this.baseurl} + '/api/' + ${table} + '/' + ${id}`);
   return this.http.put<{}>(this.baseurl + '/api/' + table + '/' + id, tab, this.httpOptions);
 }
 
 // DELETE
-Delete(id: number, table: string) {
+Delete(id: string, table: string) {
   return this.http.delete<{}>(this.baseurl + '/api/'  + table + '/' + id, this.httpOptions);
   /*
   .pipe(

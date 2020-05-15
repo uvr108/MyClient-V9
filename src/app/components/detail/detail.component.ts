@@ -1,8 +1,8 @@
-import { Input, OnInit, Output, EventEmitter, ComponentFactoryResolver, Injectable } from '@angular/core';
+import { Input, OnInit, Output, EventEmitter, ComponentFactoryResolver } from '@angular/core';
 
-import { Component, ViewChild, ViewContainerRef} from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, AfterViewInit} from '@angular/core';
 
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { CrudService } from '../../shared/crud.service';
 import {  TABLAS } from '../../tabla';
 
@@ -13,9 +13,9 @@ import { MasterComponent } from '../master/master.component';
   templateUrl: '../detail/detail.component.html',
   styleUrls: ['../detail/detail.component.css']
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent implements OnInit, AfterViewInit {
 
-  @Input() ref: number;
+  @Input() ref: string;
   @Input() padre: Array<{}>;
   @Input() table: string;
 
@@ -27,6 +27,7 @@ export class DetailComponent implements OnInit {
   id = 0;
 
   listForm: FormGroup;
+  // backForm: FormArray;
 
   Tablas = TABLAS;
 
@@ -35,7 +36,7 @@ export class DetailComponent implements OnInit {
   recursivo = true;
 
   lgroup: Array<string>;
-  components: Array<string>;
+  compon: Array<string>;
   // campos: Array<string>;
 
   next: string = null;
@@ -49,7 +50,7 @@ export class DetailComponent implements OnInit {
   tablas = TABLAS;
 
   componentRef: any;
-  out = [];
+  // out = {};
 
   constructor(private crudService: CrudService, private fb: FormBuilder, private resolver: ComponentFactoryResolver ) { }
 
@@ -83,7 +84,7 @@ export class DetailComponent implements OnInit {
 marcar_nuevo() {
   this.nuevo = this.nuevo === true ? false : true;
   this.editTable = false;
-  // console.log(`marca_nuevo() Detalle: next ${this.next} lgroup : ${JSON.stringify(this.lgroup)}`);
+  console.log(`marca_nuevo() Detalle: next ${this.next} lgroup : ${JSON.stringify(this.lgroup)}`);
   this.limpiaTabla();
 }
 
@@ -97,21 +98,45 @@ limpiaTabla(){
   // console.log(`limpiar : ${JSON.stringify(this.listForm.value)}`);
 }
 
-modifica(h: object , id: number) {
-// console.log(`modifica Detalle : ${h} ${id}`);
+modifica(h: object) {
+
 this.editTable = true;
 this.nuevo = this.nuevo === true ? false : true;
+
+
+Object.entries(h).forEach(
+  ([key, value]) => { if (this.compon[key] === 'date') {  h[key] = value.substring(0, 10); } }
+);
+
+
+
+
+if (this.back) {
+  Object.entries(this.back).forEach(([k, v]) => {
+    console.log(`modifica Details [k, v] -> ${k} ${v}`);
+    this.lgroup[k] = [h[v]];
+  } );
+}
+
+
+
+this.listForm = this.fb.group(this.lgroup);
+
+
+console.log(`modifica Detalle : compon -> ${JSON.stringify(this.compon)}`);
+console.log(`modifica Detalle : h -> ${JSON.stringify(h)}`);
+
 this.listForm.patchValue(h);
-this.id = id;
+
 
 }
 
-  load(id: number) {
+  load(id: string) {
 
-    /*
-    */
-    // console.log(`load()  Detail : this.table ${this.table} next ${this.next} id ${id} back ${this.back}`);
-    this.crudService.GetByFk(this.next, id).subscribe((data: Array<{}>) => {
+    const fk = id.toString().split('\/');
+    // console.log(`load()  Detail this.table -> ${this.table} next -> ${this.next} `);
+    // console.log(`load() Detail id -> ${id} [0] -> ${fk[0]} back -> ${this.back}`);
+    this.crudService.GetByFk(this.next, fk[0]).subscribe((data: Array<{}>) => {
       this.hijo = data;
       // console.log(`load() Detail: this.hijo : ${JSON.stringify(this.hijo)}`);
     });
@@ -120,14 +145,15 @@ this.id = id;
 
 
 
-  Update() {
-    // console.log(`Form : ${JSON.stringify(this.listForm.value)} | ${this.id} | ${this.index+1}`);
-    this.crudService.Update(this.id, this.listForm.value, this.next).subscribe(() => this.load(this.ref));
+  Update(id: string) {
+    console.log(`Update Details : ${JSON.stringify(this.listForm.value)} | ${id} | ${this.ref}`);
+    this.crudService.Update(id, this.listForm.value, this.next)
+    .subscribe(() => this.load(this.ref));
   }
 
-  Borrar() {
+  Borrar(id: string) {
       // console.log(this.id, this.table);
-      this.crudService.Delete(this.id, this.next).subscribe(() => this.load(this.ref));
+      this.crudService.Delete(id, this.next).subscribe(() => this.load(this.ref));
       this.nuevo = false;
   }
 
@@ -135,48 +161,78 @@ this.id = id;
 
   onSubmit() {
 
-    // this.limpiaTabla();
-    // this.editTable = false;
-    // this.nuevo = false;
-    // console.log(`this.ref : ${this.ref} ${this.table} ${this.next} ${JSON.stringify(this.listForm.value)}`);
+   console.log(`this.ref : ${this.ref} ${this.table} ${this.next}`);
+   console.log(`${JSON.stringify(this.listForm.value)}`);
 
-    this.crudService.adds_hijo(this.table, this.next, this.ref , this.listForm.value).
-    subscribe(() => { this.load(this.ref), this.limpiaTabla(); } );
+   if (this.back) {
+      Object.entries(this.back).forEach(([k, v]) => {
+        // console.log();
+        this.ref = this.ref + '/' + this.listForm.value[k].toString();
+      });
+    }
 
+   console.log(`onSubmit() Details -> this.ref : ${this.ref}`);
+
+   this.crudService.adds_hijo(this.table, this.next, this.ref , this.listForm.value).
+    subscribe(() => {
+                      this.load(this.ref);
+                      this.limpiaTabla();
+                    } );
 
   }
 
   ngOnInit() {
 
-    this.next = this.Tablas[this.table]['next'];
-    this.back = this.Tablas[this.next]['back'];
-    // console.log('Inicio Detalle this.next : ', this.next);
-    this.lgroup = this.Tablas[this.next]['lgroup'];
-    this.components = this.Tablas[this.next]['components'];
-    // this.campos = this.Tablas[this.next]['column'];
+    this.next = this.Tablas[this.table].next;
+    this.back = this.Tablas[this.next].back;
+    this.lgroup = this.Tablas[this.next].lgroup;
+    this.compon = this.Tablas[this.next].compon;
 
-    this.listForm = this.fb.group(this.lgroup);
-    // console.log(`Inicio Detalle lgroup : ${JSON.stringify(this.lgroup)} ref ${this.ref}`);
+    console.log(`onInit Details next -> ${this.next} back -> ${this.back}`);
 
+    if (this.back) {
+      Object.entries(this.back).forEach(([k, v]) => {
+       this.crudService.getList(k).subscribe((d) => {
+        console.log(`OnInit Detalis [k,v] -> ${k} : ${v}`);
+        this.seleccion[k] = d;
+        });
+
+        } );
+    }
+
+    /*
+    if (this.back) {
+
+      this.back.forEach((b: string) => {
+        this.crudService.getList(b).subscribe((d) => {
+          this.seleccion[b] = d;
+        });
+      });
+      // console.log(`load() Detail: select xxx ${this.back}`);
+      }
+      */
+    // console.log(`Detail afterView() : ref -> ${this.ref} `);
 
     // this.campos.forEach((a) => this.out.push(this.padre[a]));
     this.load(this.ref);
 
     // console.log(`out:  ${this.out}`);
 
+  }
+
+  ngAfterViewInit() {
+
+    /*
     if (this.back) {
+      this.back.forEach((c) => {
+        this.lgroup[c] = [1];
+      } );
+    }
 
-      this.back.forEach((b: string) => {
-        this.crudService.getList(b).subscribe((d) => {
-          this.seleccion[b] = d;
-          // console.log(`load() Detalle : next b : ${b} ${JSON.stringify(this.seleccion[b])}`);
-        });
-      });
-      // console.log(`load() Detail: select xxx ${this.back}`);
-      }
-
-    // this.seleccion = {'EstadoSolicitud': [{"id": 1,"nombre": 'xx1'}, {"id": 2,"nombre": 'xx2'}] ,
-    //               'CentroCosto': [{"id": 1,"nombre": 'yy1'}, {"id": 2,"nombre": 'yy2'}]};
+    this.listForm = this.fb.group(this.lgroup);
+    // console.log(`Inicio Detalle lgroup : ${JSON.stringify(this.lgroup)} ref ${this.ref}`);
+    // console.log(`Detail afterView() : next -> ${this.next} lgroup -> ${JSON.stringify(this.lgroup)}`);
+    */
 
   }
 
