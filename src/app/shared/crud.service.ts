@@ -29,6 +29,15 @@ httpOptions = {
 
   constructor(private http: HttpClient) { }
 
+  GetByPk(table: string, id: string): Observable<[{}]> {
+    // console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + id);
+    return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/pk/' + id)
+    .pipe(
+      retry(1),
+      catchError(this.errorHandl)
+    );
+}
+
 GetByFk(table: string, id: string): Observable<[{}]> {
     // console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + id);
     return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
@@ -66,19 +75,19 @@ adds_hijo(padre: string, hijo: string, ref: string,  hjo: object): Observable<ob
 
 // PUT
 Update(id: string, tab: {}, table: string): Observable<{}> {
-  console.log( `${this.baseurl} + '/api/' + ${table} + '/' + ${id}`);
+  // console.log(`crud Update() url -> ${this.baseurl} + '/api/' + ${table} + '/' + ${id}`);
+  // console.log(`crud Update() tab -> ${JSON.stringify(tab)}`);
   return this.http.put<{}>(this.baseurl + '/api/' + table + '/' + id, tab, this.httpOptions);
 }
 
 // DELETE
 Delete(id: string, table: string) {
-  return this.http.delete<{}>(this.baseurl + '/api/'  + table + '/' + id, this.httpOptions);
-  /*
+  return this.http.delete<{}>(this.baseurl + '/api/'  + table + '/' + id, this.httpOptions)
   .pipe(
     retry(1),
     catchError(this.errorHandl)
   );
-  */
+
 }
 
 // Error handling

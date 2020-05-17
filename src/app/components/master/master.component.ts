@@ -68,6 +68,10 @@ load(): void {
   }
 }
 
+marca_table(table: string) {
+  console.log(`marca_table() Masters : table -> ${table}`);
+}
+
 // agregar
 
   onSubmit() {

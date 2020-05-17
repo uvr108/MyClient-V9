@@ -9,11 +9,12 @@
 
 
     <div *ngIf="mostra" style="padding-left: 25px;">
-        <h4>{{ next }}</h4>
+        <h4>{{ next }}  <button type="button" class="btn btn-link btn-sm"
+          (click)="marca_next(next)">[T]</button></h4>
 
         <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
 
-            <span *ngFor="let h of hijo; index as Id">
+            <span *ngFor="let h of hijo">
                   <br>
                   <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(h.id, this.Tablas[next]['next'])">[*]</button>
                   {{h | json}}
@@ -40,7 +41,10 @@
         </p>
         </div>
       </div>
-        <p>compon : {{table}} | {{compon | json}} | {{hijo | json}}</p>
+      <!--
+        <p>padre : {{padre | json}}</p>
+        <p>hijo :  {{hijo | json}}</p>
+      -->
         <table>
           <tr *ngFor="let c of compon | keyvalue"><th>{{c['key']}} -></th>
            <td><input type="{{c['value']}}" formControlName="{{c['key']}}"/></td>
