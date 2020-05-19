@@ -5,12 +5,12 @@
 
     {{padre | json}}
 
-    <button class="btn btn-link" (click)="mensage(padre)">[x]</button>
+    <button type="button" class="btn btn-link" (click)="mensage(padre)">[x]</button>
 
 
     <div *ngIf="mostra" style="padding-left: 25px;">
         <h4>{{ next }}  <button type="button" class="btn btn-link btn-sm"
-          (click)="marca_next(next)">[T]</button></h4>
+          (click)="marca_next()">[T]</button></h4>
 
         <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
 
@@ -20,9 +20,9 @@
                   {{h | json}}
                   <button class="btn btn-link btn-sm" (click)="modifica(h)">[x]</button>
 
-                <template #messagecontainer></template>
-            </span>
 
+            </span>
+            <template #messagecontainer></template>
     </div>
 
     <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">

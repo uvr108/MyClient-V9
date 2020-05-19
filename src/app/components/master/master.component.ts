@@ -2,7 +2,7 @@ import { TABLAS } from './../../tabla';
 import { Component, OnInit, Input , AfterViewInit} from '@angular/core';
 import { CrudService } from '../../shared/crud.service';
 import { ActivatedRoute } from '@angular/router';
-// import { NAVEGA } from '../../tabla';
+
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 @Component({
@@ -31,6 +31,10 @@ listForm: FormGroup;
 
 constructor( private crudService: CrudService, private route: ActivatedRoute, private fb: FormBuilder) { }
 
+ms_tabla() {
+  console.log(`ms_tabla() Master : table -> ${this.table} fk -> ${this.fk}`);
+}
+
 ngOnInit() {
 
     if (this.table) {  } else {
@@ -39,8 +43,8 @@ ngOnInit() {
     }
 
     this.load();
-    this.lgroup = this.Tablas[this.table]['lgroup'];
-    this.compon = this.Tablas[this.table]['compon'];
+    this.lgroup = this.Tablas[this.table].lgroup;
+    this.compon = this.Tablas[this.table].compon;
     this.listForm = this.fb.group(this.lgroup);
 
     // console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
@@ -69,7 +73,8 @@ load(): void {
 }
 
 marca_table(table: string) {
-  console.log(`marca_table() Masters : table -> ${table}`);
+  console.log(`marca_table() Masters : table -> ${table} fk -> ${this.fk}`);
+
 }
 
 // agregar

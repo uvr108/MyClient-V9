@@ -52,8 +52,8 @@ export class DetailComponent implements OnInit {
 
   constructor(private crudService: CrudService, private fb: FormBuilder, private resolver: ComponentFactoryResolver ) { }
 
-  marca_next(next: string) {
-    console.log(`marca_next() Details : next -> ${next}`);
+  marca_next() {
+    console.log(`marca_next() Details : next ->  ${this.next} table -> ${this.table} ref -> ${this.ref}`);
   }
 
   activa_recursivo(ref: number, next: string) {

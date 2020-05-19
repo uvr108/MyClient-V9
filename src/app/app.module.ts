@@ -10,6 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { DetailComponent } from './components/detail/detail.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TablesComponent } from './components/tables/tables.component';
+
 
 
 @NgModule({
@@ -18,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MasterComponent,
     DetailComponent,
     TopBarComponent,
+    TablesComponent,
+
 
   ],
 
