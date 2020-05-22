@@ -1,6 +1,6 @@
 <div style="padding-left: 15px; padding-right: 15px;">
 
-  <div *ngIf="fk == null; else elseBlock">
+  <div *ngIf="fk == 0; else elseBlock">
    <p> {{table}}  <a routerLink="/{{table}}/0" target="_new">(T)</a>  </p>
   </div>
 
@@ -10,7 +10,7 @@
 
   <div style="padding-left: 15px; padding-top: 0px; padding-bottom: 0px;"></div>
 
-  <table>
+  <table class="table table-bordered table-sm">
   <tr><td colspan="3"><button type="button"
     class="btn btn-link btn-sm"
     (click)="marcar_nuevo()">(+)</button>&nbsp;</td></tr>

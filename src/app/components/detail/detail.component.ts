@@ -52,9 +52,11 @@ export class DetailComponent implements OnInit {
 
   constructor(private crudService: CrudService, private fb: FormBuilder, private resolver: ComponentFactoryResolver ) { }
 
+  /*
   marca_next() {
     console.log(`marca_next() Details : next ->  ${this.next} table -> ${this.table} ref -> ${this.ref}`);
   }
+  */
 
   activa_recursivo(ref: number, next: string) {
 
@@ -151,7 +153,7 @@ agrega_back(h: any = null) {
     const fk = id.toString().split('\/');
     // console.log(`load() Detail : table -> ${this.table} next -> ${this.next} `);
     // console.log(`load() Detail : id -> ${id} [0] -> ${fk[0]} back -> ${JSON.stringify(this.back)}`);
-    this.crudService.GetByFk(this.next, fk[0]).subscribe((data: Array<{}>) => {
+    this.crudService.GetData(this.next, fk[0]).subscribe((data: Array<{}>) => {
       this.hijo = data;
       // console.log(`load() Detail : hijo : ${JSON.stringify(this.hijo)}`);
     });
@@ -207,7 +209,7 @@ agrega_back(h: any = null) {
 
     if (this.back) {
       Object.entries(this.back).forEach(([k, v]) => {
-       this.crudService.getList(k).subscribe((d) => {
+       this.crudService.GetData(k, '0').subscribe((d) => {
         this.seleccion[k] = d;
         // console.log(`OnInit() Details : [k,v] -> ${k} : ${v} seleccion -> ${JSON.stringify(this.seleccion[k])}`);
 

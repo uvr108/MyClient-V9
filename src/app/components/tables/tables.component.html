@@ -1,3 +1,17 @@
-<p>table : {{table}}</p>
-<p>fk : {{fk}}</p>
 
+<div style = "padding-left: 15px; padding-right: 15px">
+
+  <table class="table table-bordered table-sm">
+        <thead  class="thead-dark">
+          <tr><th *ngFor="let c of cabecera">{{c}}</th></tr>
+          <tr *ngFor="let res of result   |paginate: { itemsPerPage: 15, currentPage: p } ">
+            <td *ngFor="let r of res">{{ r }}</td>
+          </tr>
+        </thead>
+    </table>
+
+</div>
+
+<pagination-controls (pageChange)="p = $event"></pagination-controls>
+
+<!--button (click)="goBack()">go back</button-->

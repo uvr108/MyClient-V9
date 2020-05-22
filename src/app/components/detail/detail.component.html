@@ -9,8 +9,9 @@
 
 
     <div *ngIf="mostra" style="padding-left: 25px;">
-        <h4>{{ next }}  <button type="button" class="btn btn-link btn-sm"
-          (click)="marca_next()">[T]</button></h4>
+        <p>{{ next }}
+          <a routerLink="/{{next}}/{{ref}}" target="_new">[T]</a>
+        </p>
 
         <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
 
@@ -45,7 +46,7 @@
         <p>padre : {{padre | json}}</p>
         <p>hijo :  {{hijo | json}}</p>
       -->
-        <table>
+        <table  class="table table-bordered table-sm">
           <tr *ngFor="let c of compon | keyvalue"><th>{{c['key']}} -></th>
            <td><input type="{{c['value']}}" formControlName="{{c['key']}}"/></td>
           </tr>
@@ -53,7 +54,7 @@
 
         <hr>
         <span>
-          <table width="70%"><tr><td>
+          <table  class="table table-bordered table-sm"><tr><td>
            <button *ngIf="!editTable" class="btn btn-info btn-sm" type="submit"
            [disabled]="!listForm.valid">(Agregar)</button>
            </td>

@@ -14,7 +14,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 export class MasterComponent implements OnInit, AfterViewInit {
 
 @Input() table: string = null;
-@Input() fk: number = null;
+@Input() fk = 0;
 
 padre: any = [];
 lgroup: Array<string>;
@@ -31,15 +31,16 @@ listForm: FormGroup;
 
 constructor( private crudService: CrudService, private route: ActivatedRoute, private fb: FormBuilder) { }
 
+/*
 ms_tabla() {
   console.log(`ms_tabla() Master : table -> ${this.table} fk -> ${this.fk}`);
 }
+*/
 
 ngOnInit() {
 
     if (this.table) {  } else {
-            // tslint:disable-next-line: no-string-literal
-            this.route.data.subscribe(v => this.table = v['table']);
+            this.route.data.subscribe(v => this.table = v.table);
     }
 
     this.load();
@@ -55,21 +56,12 @@ ngOnInit() {
 
 load(): void {
   // console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
-  if (this.fk) {
 
-    this.crudService.GetByFk(this.table, this.fk.toString())
+    this.crudService.GetData(this.table, this.fk.toString())
     .subscribe(data => {
       this.padre = data;
       // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
-  } else
-  {
-    this.crudService.getList(this.table)
-    .subscribe(data => {
-      this.padre = data;
-      // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
-    });
-  }
 }
 
 marca_table(table: string) {

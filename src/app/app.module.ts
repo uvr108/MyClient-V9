@@ -11,7 +11,7 @@ import { DetailComponent } from './components/detail/detail.component';
 import { TopBarComponent } from './components/top-bar/top-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TablesComponent } from './components/tables/tables.component';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 
 @NgModule({
@@ -21,8 +21,6 @@ import { TablesComponent } from './components/tables/tables.component';
     DetailComponent,
     TopBarComponent,
     TablesComponent,
-
-
   ],
 
 
@@ -32,7 +30,8 @@ import { TablesComponent } from './components/tables/tables.component';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    RouterModule
+    RouterModule,
+    NgxPaginationModule
   ],
   providers: [CrudService],
   bootstrap: [AppComponent]

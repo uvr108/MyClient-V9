@@ -38,23 +38,25 @@ httpOptions = {
     );
 }
 
-GetByFk(table: string, id: string): Observable<[{}]> {
+GetData(table: string, fk: string): Observable<[{}]> {
     // console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + id);
-    return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + id)
-    .pipe(
-      retry(1),
-      catchError(this.errorHandl)
-    );
+
+    if (+fk === 0) {
+      return this.http.get<any>(this.baseurl + '/api/' + table)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      );
+    }
+    else {
+      return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + fk)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      );
+    }
 }
 
-getList(table: string): Observable<Array<{}>> {
-
-  return this.http.get<any>(this.baseurl + '/api/' + table)
-    .pipe(
-      retry(1),
-      catchError(this.errorHandl)
-    );
-}
 
 agregar(tabla: {}, table: string, fk: number = null): Observable<{}> {
 
