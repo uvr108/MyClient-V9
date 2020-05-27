@@ -1,32 +1,43 @@
 
-  <div>
-
-    <button class="btn btn-link" (click)="marcar_mostra()">[*]</button>
-
-    {{padre | json}}
-
-    <button type="button" class="btn btn-link" (click)="mensage(padre)">[x]</button>
 
 
-    <div *ngIf="mostra" style="padding-left: 25px;">
+        <tr><td style="width: '50px';"><button class="btn btn-link" (click)="marcar_mostra()">[*]</button></td>
+          <td *ngFor="let p of padre" style="width: '200px';">{{p}}</td>
+          <td style="width: '50px';"><button type="button" class="btn btn-link" (click)="mensage(padre)">[x]</button></td>
+        </tr>
+
+
+    <div *ngIf="mostra" style="padding-left: 25px; width: max-content;">
         <p>{{ next }}
           <a routerLink="/{{next}}/{{ref}}" target="_new">[T]</a>
         </p>
+        <table class="table table-bordered table-sm" style="width: '100%';">
+          <thead  class="thead-dark">
+            <tr><th><button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[[+]]</button></th>
+            <th *ngFor="let c of cabecera">{{c}}</th>
+            <th>&nbsp;</th>
+            </tr>
+            <tr *ngFor="let res of hijo">
+              <td> <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(res[0], this.Tablas[next].next)">-[*]-</button>
+              </td>
+              <td *ngFor="let r of res">{{ r }}</td>
+              <button class="btn btn-link btn-sm" (click)="modifica(res)">[x]</button>
+            </tr>
+          </thead>
+      </table>
 
-        <button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[+]</button>
-
-            <span *ngFor="let h of hijo">
+            <!--span *ngFor="let h of hijo">
                   <br>
                   <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(h.id, this.Tablas[next]['next'])">[*]</button>
-                  {{h | json}}
+
                   <button class="btn btn-link btn-sm" (click)="modifica(h)">[x]</button>
 
 
-            </span>
+            </span-->
             <template #messagecontainer></template>
     </div>
 
-    <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">
+    <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; width: max-content;">
     <br>
 
     <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
@@ -47,9 +58,12 @@
         <p>hijo :  {{hijo | json}}</p>
       -->
         <table  class="table table-bordered table-sm">
-          <tr *ngFor="let c of compon | keyvalue"><th>{{c['key']}} -></th>
-           <td><input type="{{c['value']}}" formControlName="{{c['key']}}"/></td>
+          <thead  class="thead-dark">
+          <tr *ngFor="let c of compon | keyvalue">
+           <th *ngIf="c['value'] != 'hidden'">{{c['key']}} -></th>
+           <td *ngIf="c['value'] != 'hidden'"><input type="{{c['value']}}" formControlName="{{c['key']}}"/></td>
           </tr>
+          </thead>
         </table>
 
         <hr>
@@ -60,11 +74,11 @@
            </td>
            <td>
            <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
-           [disabled]="!listForm.valid" (click)="Update(hijo[0].id)">(Editar)</button>
+           [disabled]="!listForm.valid" (click)="Update()">(Editar)</button>
            </td>
            <td>
            <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
-           [disabled]="!listForm.valid" (click)="Borrar(hijo[0].id)">(Borrar)</button>&nbsp;
+           [disabled]="!listForm.valid" (click)="Borrar()">(Borrar)</button>&nbsp;
            </td>
            <td>
            <button class="btn btn-info btn-sm" type="button"
@@ -78,5 +92,3 @@
     </form>
 
     </div>
-
-</div>

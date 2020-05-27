@@ -10,19 +10,35 @@
 
   <div style="padding-left: 15px; padding-top: 0px; padding-bottom: 0px;"></div>
 
-  <table class="table table-bordered table-sm">
-  <tr><td colspan="3"><button type="button"
-    class="btn btn-link btn-sm"
-    (click)="marcar_nuevo()">(+)</button>&nbsp;</td></tr>
+  <table class="table table-bordered table-sm" style="width: '550px'">
+
+
+  <tr>
+    <th>
+      <table class="table table-bordered table-sm">
+        <thead class="thead-dark">
+          <tr>
+          <th style="width: '50px';"> <button type="button" class="btn btn-link btn-sm" (click)="marcar_nuevo()">(+)</button>  </th>
+          <th *ngFor="let c of cabecera"  style="width: '180px';">{{c}}</th>
+          <th  style="width: '50px';">&nbsp;</th>
+          </tr>
+        </thead>
+      </table>
+
+    </th>
+  </tr>
   <tr *ngFor="let p of padre; index as Id">
-    <td colspan="2">
-      <app-detail [ref]="p.id"
+
+
+      <app-detail [ref]="p[0]"
                 [padre]="padre[Id]"
                 [table]="table"
                 (enviar) = "enviar($event)">
       </app-detail>
-    </td>
+
+
   </tr>
+
   </table>
   </div>
   <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; ">

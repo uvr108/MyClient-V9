@@ -16,7 +16,7 @@ export class MasterComponent implements OnInit, AfterViewInit {
 @Input() table: string = null;
 @Input() fk = 0;
 
-padre: any = [];
+padre = [];
 lgroup: Array<string>;
 compon: Array<string>;
 
@@ -28,6 +28,9 @@ nuevo = false;
 editTabla = true;
 
 listForm: FormGroup;
+
+flag = true; // flag para cabecera
+cabecera = [];
 
 constructor( private crudService: CrudService, private route: ActivatedRoute, private fb: FormBuilder) { }
 
@@ -59,8 +62,21 @@ load(): void {
 
     this.crudService.GetData(this.table, this.fk.toString())
     .subscribe(data => {
-      this.padre = data;
+      // this.padre = data;
       // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
+      this.padre = [];
+      data.forEach((f) => {
+        const subresult = [];
+
+        for (const [key, value] of Object.entries(f)) {
+          if (this.flag) {this.cabecera.push(key); }
+          subresult.push(value);
+      }
+        this.padre.push(subresult);
+        this.flag = false;
+  });
+
+
     });
 }
 
@@ -115,6 +131,8 @@ enviar(msg: object) {
 
   if (!this.nuevo) { this.marcar_nuevo(); }
 
+  console.log(`enviar() Master : msg -> ${JSON.stringify(msg)} nuevo -> ${this.nuevo}`);
+
   // console.log(`msg : ${JSON.stringify(msg)}`);
   this.updateTabla(msg);
   this.editTabla = true;
@@ -137,9 +155,16 @@ limpiar() {
 }
 
 updateTabla(msg: object = null) {
-
+  const js = this.lgroup;
+  let cont = 0;
   if (msg === null) { this.limpiar(); } else {
-    this.listForm.patchValue(msg);
+    for (const [key, value] of Object.entries(this.lgroup)) {
+        js[key] = msg[cont];
+        console.log(`updateTable() master : key -> ${JSON.stringify(key)} msg[cont] -> ${msg[cont]}`);
+        cont += 1;
+    }
+    console.log(`updateTable() master : js -> ${JSON.stringify(js)}`);
+    this.listForm.patchValue(js);
   }
 }
 

@@ -23,7 +23,7 @@ export class DetailComponent implements OnInit {
 
   @ViewChild('messagecontainer', { read: ViewContainerRef }) entry: ViewContainerRef;
 
-  hijo: Array<any>;
+  hijo = [];
   id = 0;
 
   listForm: FormGroup;
@@ -34,6 +34,7 @@ export class DetailComponent implements OnInit {
   mostra = false; // muestra listado hijo
   nuevo = false;  // muestra treeForm
   recursivo = true;
+  // result = [];
 
   lgroup: Array<string>;
   compon: Array<string>;
@@ -49,6 +50,9 @@ export class DetailComponent implements OnInit {
   tablas = TABLAS;
 
   componentRef: any;
+
+  flag = true; // flag para cabecera
+  cabecera = [];
 
   constructor(private crudService: CrudService, private fb: FormBuilder, private resolver: ComponentFactoryResolver ) { }
 
@@ -82,6 +86,7 @@ export class DetailComponent implements OnInit {
   }
 
   mensage(padre: {}) {
+    console.log(`mensage() Detail : padre -> ${JSON.stringify(padre)}`);
     this.enviar.emit(padre);
 }
 
@@ -117,6 +122,9 @@ modifica(h: object) {
 this.editTable = true;
 this.nuevo = this.nuevo === true ? false : true;
 
+const js = this.lgroup;
+let cont = 0;
+
 Object.entries(h).forEach(
   ([key, value]) => { if (this.compon[key] === 'date') {  h[key] = value.substring(0, 10); } }
 );
@@ -130,7 +138,13 @@ this.listForm = this.fb.group(this.lgroup);
 console.log(`modifica() Details : compon -> ${JSON.stringify(this.compon)}`);
 console.log(`modifica() Details : h -> ${JSON.stringify(h)}`);
 
-this.listForm.patchValue(h);
+for (const [key, value] of Object.entries(this.lgroup)) {
+  js[key] = h[cont];
+  console.log(`updateTable() master : key -> ${JSON.stringify(key)} msg[cont] -> ${h[cont]}`);
+  cont += 1;
+}
+
+this.listForm.patchValue(js);
 
 }
 
@@ -149,12 +163,22 @@ agrega_back(h: any = null) {
 }
 
   load(id: string) {
-
+    this.hijo = [];
     const fk = id.toString().split('\/');
     // console.log(`load() Detail : table -> ${this.table} next -> ${this.next} `);
     // console.log(`load() Detail : id -> ${id} [0] -> ${fk[0]} back -> ${JSON.stringify(this.back)}`);
     this.crudService.GetData(this.next, fk[0]).subscribe((data: Array<{}>) => {
-      this.hijo = data;
+      // this.hijo = data;
+
+      data.forEach((f) => {
+        const subresult = [];
+        for (const [key, value] of Object.entries(f)) {
+          if (this.flag) {this.cabecera.push(key); }
+          subresult.push(value);
+      }
+        this.hijo.push(subresult);
+        this.flag = false;
+  });
       // console.log(`load() Detail : hijo : ${JSON.stringify(this.hijo)}`);
     });
 
@@ -162,8 +186,9 @@ agrega_back(h: any = null) {
 
 
 
-  Update(id: string) {
+  Update() {
 
+    const id = this.listForm.value.id;
     // this.ref = id;   OJO !!!!!!
 
     console.log(`Update() Details : listForm ->
@@ -173,8 +198,8 @@ agrega_back(h: any = null) {
     .subscribe(() => this.load(this.ref));
   }
 
-  Borrar(id: string) {
-
+  Borrar() {
+      const id = this.listForm.value.id;
       this.crudService.Delete(id, this.next).subscribe(() => this.load(this.ref));
       this.nuevo = false;
   }

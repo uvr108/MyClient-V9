@@ -25,6 +25,8 @@ export class TablesComponent implements OnInit {
 
   flag = true; // flag para cabecera
 
+
+
   ngOnInit(): void {
     this.table = this.route.snapshot.paramMap.get('table');
     this.fk = this.route.snapshot.paramMap.get('fk');
@@ -44,7 +46,7 @@ export class TablesComponent implements OnInit {
         data.forEach((f) => {
           const subresult = [];
           for (const [key, value] of Object.entries(f)) {
-            if (this.flag) {this.cabecera.push(key);}
+            if (this.flag) {this.cabecera.push(key); }
             subresult.push(value);
         }
           this.result.push(subresult);
