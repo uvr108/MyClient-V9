@@ -44,7 +44,7 @@ export class DetailComponent implements OnInit {
   back: Array<string> = null;
   seleccion: object = {};
 
-  editTable = false; // habilita/desabilita boton editar / agregar
+  editTable = true; // habilita/desabilita boton editar / agregar
   detalle: Array<any>;
 
   tablas = TABLAS;
@@ -65,7 +65,7 @@ export class DetailComponent implements OnInit {
   activa_recursivo(ref: number, next: string) {
 
     if (next) {
-    // console.log(`recursivo() Details : recursivo -> ${this.recursivo} next -> ${next} ref-> ${ref}`);
+    console.log(`recursivo() Details : recursivo -> ${this.recursivo} next -> ${next} ref-> ${ref}`);
 
     this.entry.clear();
     const factory = this.resolver.resolveComponentFactory(MasterComponent);
@@ -91,6 +91,8 @@ export class DetailComponent implements OnInit {
 }
 
 marcar_nuevo() {
+
+  // alert('Marca Nuevo');
 
   if (this.back) {
     this.agrega_back();
@@ -119,6 +121,8 @@ limpiaTabla(){
 
 modifica(h: object) {
 
+alert('modifica');
+
 this.editTable = true;
 this.nuevo = this.nuevo === true ? false : true;
 
@@ -140,10 +144,10 @@ console.log(`modifica() Details : h -> ${JSON.stringify(h)}`);
 
 for (const [key, value] of Object.entries(this.lgroup)) {
   js[key] = h[cont];
-  console.log(`updateTable() master : key -> ${JSON.stringify(key)} msg[cont] -> ${h[cont]}`);
+  console.log(`modifica() Details : key -> ${JSON.stringify(key)} msg[cont] -> ${h[cont]}`);
   cont += 1;
 }
-
+console.log(`modifica() Details patchValue(js): js -> ${JSON.stringify(js)}`);
 this.listForm.patchValue(js);
 
 }
@@ -164,6 +168,7 @@ agrega_back(h: any = null) {
 
   load(id: string) {
     this.hijo = [];
+
     const fk = id.toString().split('\/');
     // console.log(`load() Detail : table -> ${this.table} next -> ${this.next} `);
     // console.log(`load() Detail : id -> ${id} [0] -> ${fk[0]} back -> ${JSON.stringify(this.back)}`);

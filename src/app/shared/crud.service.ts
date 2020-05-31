@@ -39,7 +39,7 @@ httpOptions = {
 }
 
 GetData(table: string, fk: string): Observable<[{}]> {
-    // console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + id);
+    console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + fk);
 
     if (+fk === 0) {
       return this.http.get<any>(this.baseurl + '/api/' + table)

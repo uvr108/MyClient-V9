@@ -3,17 +3,18 @@
 
         <tr><td style="width: '50px';"><button class="btn btn-link" (click)="marcar_mostra()">[*]</button></td>
           <td *ngFor="let p of padre" style="width: '200px';">{{p}}</td>
-          <td style="width: '50px';"><button type="button" class="btn btn-link" (click)="mensage(padre)">[x]</button></td>
+          <td style="width: '50px';"><button type="button" class="btn btn-link"
+            data-toggle="modal" data-target="#myModal" (click)="mensage(padre)">[[x]]</button></td>
         </tr>
 
 
     <div *ngIf="mostra" style="padding-left: 25px; width: max-content;">
         <p>{{ next }}
-          <a routerLink="/{{next}}/{{ref}}" target="_new">[T]</a>
+          <a routerLink="/{{next}}/{{ref}}" target="_top">[T]</a>
         </p>
         <table class="table table-bordered table-sm" style="width: '100%';">
           <thead  class="thead-dark">
-            <tr><th><button class="btn btn-link btn-sm" (click)="marcar_nuevo()">[[+]]</button></th>
+            <tr><th><button class="btn btn-link btn-sm" (click)="marcar_nuevo()" data-toggle="modal" data-target="#myModal2">[[+]]</button></th>
             <th *ngFor="let c of cabecera">{{c}}</th>
             <th>&nbsp;</th>
             </tr>
@@ -21,7 +22,7 @@
               <td> <button type="button" class="btn btn-link btn-sm" (click) = "activa_recursivo(res[0], this.Tablas[next].next)">-[*]-</button>
               </td>
               <td *ngFor="let r of res">{{ r }}</td>
-              <button class="btn btn-link btn-sm" (click)="modifica(res)">[x]</button>
+              <button class="btn btn-link btn-sm"   (click)="modifica(res)" data-toggle="modal" data-target="#myModal2">[x]</button>
             </tr>
           </thead>
       </table>
@@ -37,8 +38,18 @@
             <template #messagecontainer></template>
     </div>
 
-    <div *ngIf="nuevo" style="padding-left: 20px; padding-right: 20px; width: max-content;">
-    <br>
+    <div  class="modal" id="myModal2">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">&nbsp;</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
 
     <form [formGroup]="listForm" (ngSubmit)="onSubmit()">
 
@@ -57,38 +68,37 @@
         <p>padre : {{padre | json}}</p>
         <p>hijo :  {{hijo | json}}</p>
       -->
-        <table  class="table table-bordered table-sm">
-          <thead  class="thead-dark">
-          <tr *ngFor="let c of compon | keyvalue">
-           <th *ngIf="c['value'] != 'hidden'">{{c['key']}} -></th>
-           <td *ngIf="c['value'] != 'hidden'"><input type="{{c['value']}}" formControlName="{{c['key']}}"/></td>
-          </tr>
-          </thead>
-        </table>
 
-        <hr>
-        <span>
-          <table  class="table table-bordered table-sm"><tr><td>
+
+          <span *ngFor="let c of compon | keyvalue">
+
+           <span *ngIf="c['value'] != 'hidden'">{{c['key']}}</span>&nbsp;
+           <span *ngIf="c['value'] != 'hidden'"><input type="{{c['value']}}" formControlName="{{c['key']}}"/></span>
+          </span>
+
+           <span>
            <button *ngIf="!editTable" class="btn btn-info btn-sm" type="submit"
-           [disabled]="!listForm.valid">(Agregar)</button>
-           </td>
-           <td>
+           [disabled]="!listForm.valid">(Agregar)</button>&nbsp;
+           </span>
+           <span>
            <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
-           [disabled]="!listForm.valid" (click)="Update()">(Editar)</button>
-           </td>
-           <td>
+           [disabled]="!listForm.valid" (click)="Update()">(Editar)</button>&nbsp;
+           </span>
+           <span>
            <button *ngIf="editTable" class="btn btn-info btn-sm" type="button"
            [disabled]="!listForm.valid" (click)="Borrar()">(Borrar)</button>&nbsp;
-           </td>
-           <td>
-           <button class="btn btn-info btn-sm" type="button"
-           (click)="cerrar()">(Cerrar)</button>
-           </td>
-           </tr>
-          </table>
-        </span>
-        <hr>
+           </span>
 
     </form>
 
-    </div>
+  </div>
+
+  <!-- Modal footer -->
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+  </div>
+
+</div>
+</div>
+</div>
+

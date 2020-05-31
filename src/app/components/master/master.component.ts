@@ -51,19 +51,18 @@ ngOnInit() {
     this.compon = this.Tablas[this.table].compon;
     this.listForm = this.fb.group(this.lgroup);
 
-    // console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
-    // console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
-    // console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
-    // console.log(`onInit Master compon : ${JSON.stringify(this.compon)}`);
+    console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
+    console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
+    console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
+    console.log(`onInit Master compon : ${JSON.stringify(this.compon)}`);
 }
 
 load(): void {
-  // console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
+    console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
 
     this.crudService.GetData(this.table, this.fk.toString())
     .subscribe(data => {
-      // this.padre = data;
-      // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
+
       this.padre = [];
       data.forEach((f) => {
         const subresult = [];
@@ -76,7 +75,7 @@ load(): void {
         this.flag = false;
   });
 
-
+      console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
 }
 

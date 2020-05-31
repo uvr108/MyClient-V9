@@ -41,6 +41,12 @@ export const TABLAS: object = {
     compon: { id: 'hidden', solicitante: 'text', fecha: 'date', numero_registro: 'text'}
   }
 
+, CentroCosto: {
+   next: 'Solicitud',
+   back: null,
+   lgroup: { id: [''], nombre: ['', Validators.required] },
+   compon: { id: 'hidden', nombre: 'text' }
+}
 
 , OrdenCompra: {
     next: 'factura',

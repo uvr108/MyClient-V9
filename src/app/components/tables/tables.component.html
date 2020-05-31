@@ -10,8 +10,16 @@
         </thead>
     </table>
 
+<table style="width: 100%;">
+  <tr>
+  <th><pagination-controls (pageChange)="p = $event"></pagination-controls></th>
+  </tr>
+  <tr>
+    <th>
+      <button  type="button" class="btn btn-outline-primary btn-sm" (click)="goBack()">go back</button>
+      </th>
+  </tr>
+</table>
+
 </div>
 
-<pagination-controls (pageChange)="p = $event"></pagination-controls>
-
-<!--button (click)="goBack()">go back</button-->
