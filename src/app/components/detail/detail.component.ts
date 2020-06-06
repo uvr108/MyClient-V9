@@ -53,6 +53,7 @@ export class DetailComponent implements OnInit {
 
   flag = true; // flag para cabecera
   cabecera = [];
+  cols = 5;
 
   constructor(private crudService: CrudService, private fb: FormBuilder, private resolver: ComponentFactoryResolver ) { }
 
@@ -64,22 +65,42 @@ export class DetailComponent implements OnInit {
 
   activa_recursivo(ref: number, next: string) {
 
-    if (next) {
     console.log(`recursivo() Details : recursivo -> ${this.recursivo} next -> ${next} ref-> ${ref}`);
-
-    this.entry.clear();
-    const factory = this.resolver.resolveComponentFactory(MasterComponent);
-    this.componentRef = this.entry.createComponent(factory);
-    this.componentRef.instance.table = next;
-    this.componentRef.instance.fk = ref;
-    this.recursivo = this.recursivo === true ? false : true;
-    if (this.recursivo) { this.desactiva_recursivo(); }
-    }
+    // this.recursivo = true;
+    if (next) {
+        this.entry.clear();
+        const factory = this.resolver.resolveComponentFactory(MasterComponent);
+        this.componentRef = this.entry.createComponent(factory);
+        this.componentRef.instance.table = next;
+        this.componentRef.instance.fk = ref;
+        // this.recursivo = this.recursivo === true ? false : true;
+        // if (this.recursivo) { this.desactiva_recursivo(); }
+        }
+    console.log(`recursivo() Details : recursivo -> ${this.recursivo} next -> ${next} ref-> ${ref}`);
   }
 
   marcar_mostra() {
+
     this.mostra = this.mostra === true ? false : true;
-  }
+    if (this.mostra) {
+
+      console.log(`marca_mostra() Details : next -> ${this.next} back -> ${JSON.stringify(this.back)}`);
+
+      if (this.back) {
+        Object.entries(this.back).forEach(([k, v]) => {
+         this.crudService.GetData(k, '0').subscribe((d) => {
+          this.seleccion[k] = d;
+          console.log(`marca_mostra() Details : [k,v] -> ${k} : ${v} seleccion -> ${JSON.stringify(this.seleccion[k])}`);
+          });
+          } );
+      }
+      console.log(`marca_mostra() Detail : ref -> ${this.ref}`);
+      // this.load(this.ref);
+
+      this.load(this.ref);
+      }
+    }
+
 
   desactiva_recursivo() {
     this.componentRef.destroy();
@@ -121,33 +142,50 @@ limpiaTabla(){
 
 modifica(h: object) {
 
-alert('modifica');
-
 this.editTable = true;
 this.nuevo = this.nuevo === true ? false : true;
 
 const js = this.lgroup;
 let cont = 0;
 
+/*
 Object.entries(h).forEach(
-  ([key, value]) => { if (this.compon[key] === 'date') {  h[key] = value.substring(0, 10); } }
+  ([key, value]) => {
+    console.log(`modifica : Detail -> key ${h[key]}`);
+    if (this.compon[key] === 'date') {
+      h[key] = value.substring(0, 10);
+    }
+  }
 );
+*/
 
 if (this.back) {
   this.agrega_back(h);
 }
 
+
 this.listForm = this.fb.group(this.lgroup);
 
-console.log(`modifica() Details : compon -> ${JSON.stringify(this.compon)}`);
-console.log(`modifica() Details : h -> ${JSON.stringify(h)}`);
+// console.log(`modifica() Details : compon -> ${JSON.stringify(this.compon)}`);
+// console.log(`modifica() Details : listForm.value -> ${JSON.stringify(this.listForm.value)}`);
+// console.log(`modifica() Details : h -> ${JSON.stringify(h)}`);
+
+
 
 for (const [key, value] of Object.entries(this.lgroup)) {
-  js[key] = h[cont];
-  console.log(`modifica() Details : key -> ${JSON.stringify(key)} msg[cont] -> ${h[cont]}`);
+
+  if (this.compon[key] === 'date') {
+    js[key] = h[cont].substring(0, 10);
+  }
+  else {
+    js[key] = h[cont];
+  }
+
+
+  console.log(`modifica() Details : key -> ${JSON.stringify(key)} compon[key] -> ${this.compon[key]} js[key] -> ${js[key]}`);
   cont += 1;
 }
-console.log(`modifica() Details patchValue(js): js -> ${JSON.stringify(js)}`);
+// console.log(`modifica() Details patchValue(js): js -> ${JSON.stringify(js)}`);
 this.listForm.patchValue(js);
 
 }
@@ -163,17 +201,16 @@ agrega_back(h: any = null) {
         }
 
   } );
-
+  // console.log(`xxx ${JSON.stringify(this.lgroup)}`);
 }
 
-  load(id: string) {
+  load(ref: string) {
     this.hijo = [];
 
-    const fk = id.toString().split('\/');
+    const fk = ref.toString().split('\/');
     // console.log(`load() Detail : table -> ${this.table} next -> ${this.next} `);
-    // console.log(`load() Detail : id -> ${id} [0] -> ${fk[0]} back -> ${JSON.stringify(this.back)}`);
+    // console.log(`load() Detail : fk -> ${JSON.stringify(fk)} fk[0] -> ${fk[0]} back -> ${JSON.stringify(this.back)}`);
     this.crudService.GetData(this.next, fk[0]).subscribe((data: Array<{}>) => {
-      // this.hijo = data;
 
       data.forEach((f) => {
         const subresult = [];
@@ -196,8 +233,8 @@ agrega_back(h: any = null) {
     const id = this.listForm.value.id;
     // this.ref = id;   OJO !!!!!!
 
-    console.log(`Update() Details : listForm ->
-    ${JSON.stringify(this.listForm.value)} id-> ${id} ref-> ${this.ref}`);
+    // console.log(`Update() Details : listForm ->
+    // ${JSON.stringify(this.listForm.value)} id-> ${id} ref-> ${this.ref}`);
 
     this.crudService.Update(id, this.listForm.value, this.next)
     .subscribe(() => this.load(this.ref));
@@ -215,11 +252,12 @@ agrega_back(h: any = null) {
 
    if (this.back) {
     Object.entries(this.back).forEach(([k, v]) => {
+      // console.log(`onSubmit() : Details -> listForm.value : ${this.listForm.value} k -> ${k}`);
       this.ref = this.ref + '/' + this.listForm.value[k].toString();
     });
     }
-   console.log(`onSubmit() : Details -> ref : ${this.ref} table -> ${this.table} next -> ${this.next}`);
-   console.log(`onSubmit() : Details -> listForm -> ${JSON.stringify(this.listForm.value)}`);
+   // console.log(`onSubmit() : Details -> ref : ${this.ref} table -> ${this.table} next -> ${this.next}`);
+   // console.log(`onSubmit() : Details -> listForm -> ${JSON.stringify(this.listForm.value)}`);
 
    this.crudService.adds_hijo(this.table, this.next, this.ref , this.listForm.value).
     subscribe(() => {
@@ -229,28 +267,15 @@ agrega_back(h: any = null) {
   }
 
   ngOnInit() {
-
     this.next = this.Tablas[this.table].next;
+    // console.log(`OnInit() Detail : next -> ${this.next}`);
     this.back = this.Tablas[this.next].back;
+    // console.log(`OnInit() Detail : back -> ${JSON.stringify(this.back)}`);
     this.lgroup = this.Tablas[this.next].lgroup;
+    // console.log(`OnInit() Detail : lgroup -> ${JSON.stringify(this.lgroup)}`);
     this.compon = this.Tablas[this.next].compon;
-
-    // console.log(`onInit() Details : next -> ${this.next} back -> ${this.back}`);
-
-    if (this.back) {
-      Object.entries(this.back).forEach(([k, v]) => {
-       this.crudService.GetData(k, '0').subscribe((d) => {
-        this.seleccion[k] = d;
-        // console.log(`OnInit() Details : [k,v] -> ${k} : ${v} seleccion -> ${JSON.stringify(this.seleccion[k])}`);
-
-        });
-
-        } );
-    }
-
-    this.load(this.ref);
+    // console.log(`OnInit() Detail : compon -> ${JSON.stringify(this.compon)}`);
     this.listForm = this.fb.group(this.lgroup);
-
+    // console.log(`OnInit() Detail : listForm.value -> ${JSON.stringify(this.listForm.value)}`);
   }
-
 }

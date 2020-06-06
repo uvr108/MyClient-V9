@@ -8,15 +8,15 @@
     <p> {{table}}  <a routerLink="/{{table}}/{{fk}}" target="_parent">(T)</a>  </p>
   </ng-template>
 
-  <div style="padding-left: 15px; padding-top: 0px; padding-bottom: 0px;"></div>
+  <div class="container" style="padding-left: 15px; padding-top: 0px; padding-bottom: 0px;"></div>
 
-  <table class="table table-bordered table-sm" style="width: '550px'">
-
+  <table class="table table-striped table-sm" style="width: '550px'">
+    <thead class="thead-dark">
 
   <tr>
     <th>
-      <table class="table table-bordered table-sm">
-        <thead class="thead-dark">
+      <table>
+        <thead>
           <tr>
           <th style="width: '50px';"> <button type="button" class="btn btn-link btn-sm"
             data-toggle="modal" data-target="#myModal" (click)="marcar_nuevo()">(+)</button></th>
@@ -39,16 +39,17 @@
 
 
   </tr>
-
+  </thead>
   </table>
   </div>
-  <div  class="modal" id="myModal">
-    <div class="modal-dialog">
+  <div  class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">&nbsp;</h4>
+          <h4 class="modal-title" *ngIf="editTabla">Editar/Borrar en {{table}}</h4>
+          <h4 class="modal-title" *ngIf="!editTabla">Ingresar en {{table}}</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -69,7 +70,7 @@
               <button *ngIf="!editTabla" class="btn btn-info btn-sm" type="submit" [disabled]="!listForm.valid">[Agregar]</button>&nbsp;
               <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="editar()">[Editar]</button>&nbsp;
               <button *ngIf="editTabla" class="btn btn-info btn-sm" type="button" (click)="borrar()">[Borrar]</button>&nbsp;
-              <button class="btn btn-info btn-sm" type="button" (click)="cerrar()">[Cerrar]</button>
+              <!--button class="btn btn-info btn-sm" type="button" (click)="cerrar()">[Cerrar]</button-->
             </span>
 
 

@@ -43,7 +43,7 @@ ms_tabla() {
 ngOnInit() {
 
     if (this.table) {  } else {
-            this.route.data.subscribe(v => this.table = v.table);
+            this.route.data.subscribe(v => { this.table = v.table; });
     }
 
     this.load();
@@ -51,14 +51,15 @@ ngOnInit() {
     this.compon = this.Tablas[this.table].compon;
     this.listForm = this.fb.group(this.lgroup);
 
-    console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
-    console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
-    console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
-    console.log(`onInit Master compon : ${JSON.stringify(this.compon)}`);
+    // console.log(`onInit Master table/fk:  ${this.table}/${this.fk}`);
+    // console.log(`onInit Master listForm :  ${JSON.stringify(this.listForm.value)}`);
+    // console.log(`onInit Master lgroup : ${JSON.stringify(this.lgroup)}`);
+    // console.log(`onInit Master compon : ${JSON.stringify(this.compon)}`);
 }
 
 load(): void {
-    console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
+
+    // console.log(`load() Master : table ${this.table} fk : ${this.fk}`);
 
     this.crudService.GetData(this.table, this.fk.toString())
     .subscribe(data => {
@@ -75,20 +76,21 @@ load(): void {
         this.flag = false;
   });
 
-      console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
+      // console.log(`load() Master padre ${JSON.stringify(this.padre)}`);
     });
 }
-
+/*
 marca_table(table: string) {
   console.log(`marca_table() Masters : table -> ${table} fk -> ${this.fk}`);
 
 }
+*/
 
 // agregar
 
   onSubmit() {
 
-    console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
+    // console.log(`onSubmit() Master : lform ${JSON.stringify(this.listForm.value)} table ${this.table} fk ${this.fk}`);
 
     this.crudService
     .agregar(this.listForm.value, this.table, this.fk)
@@ -120,7 +122,7 @@ borrar() {
 
       this.crudService.Delete(id, this.table).subscribe(() => this.load());
 
-      this.cerrar();
+      // this.cerrar();
 }
 
   ngAfterViewInit() {
@@ -130,7 +132,7 @@ enviar(msg: object) {
 
   if (!this.nuevo) { this.marcar_nuevo(); }
 
-  console.log(`enviar() Master : msg -> ${JSON.stringify(msg)} nuevo -> ${this.nuevo}`);
+  // console.log(`enviar() Master : msg -> ${JSON.stringify(msg)} nuevo -> ${this.nuevo}`);
 
   // console.log(`msg : ${JSON.stringify(msg)}`);
   this.updateTabla(msg);
@@ -159,14 +161,14 @@ updateTabla(msg: object = null) {
   if (msg === null) { this.limpiar(); } else {
     for (const [key, value] of Object.entries(this.lgroup)) {
         js[key] = msg[cont];
-        console.log(`updateTable() master : key -> ${JSON.stringify(key)} msg[cont] -> ${msg[cont]}`);
+        // console.log(`updateTable() master : key -> ${JSON.stringify(key)} msg[cont] -> ${msg[cont]}`);
         cont += 1;
     }
-    console.log(`updateTable() master : js -> ${JSON.stringify(js)}`);
+    // console.log(`updateTable() master : js -> ${JSON.stringify(js)}`);
     this.listForm.patchValue(js);
   }
 }
 
-cerrar() { this.nuevo = false; }
+// cerrar() { this.nuevo = false; }
 
 }

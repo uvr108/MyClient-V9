@@ -39,9 +39,9 @@ httpOptions = {
 }
 
 GetData(table: string, fk: string): Observable<[{}]> {
-    console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + fk);
 
     if (+fk === 0) {
+      // console.log('GeByFk crud : ', this.baseurl + '/api/' + table);
       return this.http.get<any>(this.baseurl + '/api/' + table)
       .pipe(
         retry(1),
@@ -49,6 +49,7 @@ GetData(table: string, fk: string): Observable<[{}]> {
       );
     }
     else {
+      // console.log('GeByFk crud : ', this.baseurl + '/api/' + table + '/fk/' + fk);
       return this.http.get<[{}]>(this.baseurl + '/api/' + table + '/fk/' + fk)
       .pipe(
         retry(1),
@@ -100,7 +101,7 @@ errorHandl(error) {
      errorMessage = error.error.message;
    } else {
      // Get server-side error
-     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+     errorMessage = `Error Code: xxx ${error.status}\nMessage: ${error.message}`;
    }
    console.log(errorMessage);
    return throwError(errorMessage);
